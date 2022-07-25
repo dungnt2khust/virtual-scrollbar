@@ -55,14 +55,19 @@ export class VirtualScrollbarComponent implements OnInit {
           }
         } else {
           if (!this.horizontal) {
-            if (this.trackTop < this.trackSize) {
+            if (
+              this.trackTop <
+              this.thumbSize - this.trackSize - this.trackTop
+            ) {
               this.trackTop = 0;
             } else {
               this.trackTop = this.thumbSize - this.trackSize;
             }
           } else {
-            console.log(this.trackLeft);
-            if (this.trackLeft < this.trackSize) {
+            if (
+              this.trackLeft <
+              this.thumbSize - this.trackSize - this.trackLeft
+            ) {
               this.trackLeft = 0;
             } else {
               this.trackLeft = this.thumbSize - this.trackSize;
