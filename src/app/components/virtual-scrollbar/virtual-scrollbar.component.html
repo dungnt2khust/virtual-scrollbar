@@ -3,9 +3,12 @@
   <div
     class="virtual-scrollbar__main position-relative"
     (mousedown)="mousedownMain($event)"
+    #wrapper
   >
     <div
       class="virtual-scrollbar__track position-absolute"
+      [style.height]="trackHeight + 'px'"
+      [style.top]="trackTop + 'px'"
       #track
       (mousedown)="$event.stopPropagation(); mousedownTrack($event)"
     ></div>

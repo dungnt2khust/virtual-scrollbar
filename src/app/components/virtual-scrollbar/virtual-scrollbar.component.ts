@@ -6,20 +6,42 @@ import { Component, OnInit, Input, ViewChild, ElementRef } from '@angular/core';
   styleUrls: ['./virtual-scrollbar.component.scss'],
 })
 export class VirtualScrollbarComponent implements OnInit {
+  @ViewChild('wrapper', { read: ElementRef }) wrapper: ElementRef;
   @ViewChild('track', { read: ElementRef }) track: ElementRef;
   @Input() id = '';
   constructor() {}
   positionScroll = 0;
   movingTrack = false;
   startY = 0;
+  trackTop = 0;
+  clientHeight = 0;
+  scrollHeight = 0;
+
+  thumbHeight = 0;
+  trackHeight = 0;
+  elementScrollable: any;
 
   ngAfterViewInit() {
+    this.setSizeScrollbar();
+    this.elementScrollable = document.getElementById(this.id);
+    this.elementScrollable.addEventListener('scroll', (e) => {
+      let scrollTop = this.elementScrollable.scrollTop;
+      this.track.nativeElement.style.
+    });
+
     window.addEventListener('mousemove', (e) => {
       if (this.movingTrack) {
         this.clearSelection();
-        if (this.outWrapper(e)) {
-          this.track.nativeElement.style.top = e.clientY - this.startY + 'px';
-          this.track.nativeElement.style.bottom = 'unset';
+        var outWrapper = this.outWrapper(e);
+        if (!outWrapper.out) {
+          this.trackTop = e.clientY - this.startY;
+        } else {
+          if (e.clientY < this.thumbHeight - this.trackHeight) {
+            this.trackTop = 0;
+          } else {
+            this.trackTop =
+              this.thumbHeight - this.trackHeight;
+          }
         }
       }
     });
@@ -31,6 +53,20 @@ export class VirtualScrollbarComponent implements OnInit {
   }
 
   ngOnInit() {}
+
+  /**
+   * Đặt kicks thước cho scrollbar
+   * createdby ntdung5 25.07.2022
+   */
+  setSizeScrollbar() {
+    var scrollable = document.getElementById(this.id);
+    this.clientHeight = scrollable.clientHeight;
+    this.scrollHeight = scrollable.scrollHeight;
+    this.thumbHeight =
+      this.wrapper.nativeElement.getBoundingClientRect().height;
+    this.trackHeight =
+      (this.clientHeight / this.scrollHeight) * this.thumbHeight;
+  }
 
   mousedownMain(e) {
     console.log(e);
@@ -59,6 +95,16 @@ export class VirtualScrollbarComponent implements OnInit {
     // }
   }
   outWrapper(e) {
-    return false;
+    if (
+      e.clientY - this.startY >= 0 &&
+      e.clientY - this.startY <= this.thumbHeight - this.trackHeight
+    ) {
+      return {
+        out: false,
+      };
+    }
+    return {
+      out: true,
+    };
   }
 }
