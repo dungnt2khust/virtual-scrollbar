@@ -26,8 +26,12 @@ export class VirtualScrollbarComponent implements OnInit {
   haveScroll = false;
 
   ngAfterViewInit() {
-    this.setSizeScrollbar();
-    this.checkHaveScroll();
+    setTimeout(() => {
+      this.checkHaveScroll();
+      setTimeout(() => {
+        this.setSizeScrollbar();
+      }, 100);
+    }, 100);
     this.elementScrollable = document.getElementById(this.id);
     this.elementScrollable.addEventListener('scroll', (e) => {
       if (!this.horizontal) {
@@ -51,13 +55,14 @@ export class VirtualScrollbarComponent implements OnInit {
           }
         } else {
           if (!this.horizontal) {
-            if (e.clientY < this.thumbSize - this.trackSize) {
+            if (this.trackTop < this.trackSize) {
               this.trackTop = 0;
             } else {
               this.trackTop = this.thumbSize - this.trackSize;
             }
           } else {
-            if (e.clientX < this.thumbSize - this.trackSize) {
+            console.log(this.trackLeft);
+            if (this.trackLeft < this.trackSize) {
               this.trackLeft = 0;
             } else {
               this.trackLeft = this.thumbSize - this.trackSize;
