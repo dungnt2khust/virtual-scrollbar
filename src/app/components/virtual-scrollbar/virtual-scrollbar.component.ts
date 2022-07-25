@@ -48,7 +48,7 @@ export class VirtualScrollbarComponent implements OnInit {
             this.trackTop = e.clientY - this.startY;
           }
         } else {
-          if (this.horizontal) {
+          if (!this.horizontal) {
             if (e.clientY < this.thumbSize - this.trackSize) {
               this.trackTop = 0;
             } else {
@@ -75,6 +75,9 @@ export class VirtualScrollbarComponent implements OnInit {
       if (this.movingTrack) {
         this.movingTrack = false;
       }
+    });
+    window.addEventListener('resize', () => {
+      this.setSizeScrollbar();
     });
   }
 
