@@ -5,6 +5,7 @@ p {
   height: 700px;
   overflow: auto;
   &__content {
+    width: 1000px;
     background: aqua;
   }
 }

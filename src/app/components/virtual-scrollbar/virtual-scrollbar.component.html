@@ -1,14 +1,20 @@
-<div class="virtual-scrollbar d-flex flex-column align-items-center">
+<div
+  [style]="styleScrollbar"
+  class="virtual-scrollbar d-flex flex-column align-items-center"
+>
   <div class="virtual-scrollbar__control"></div>
   <div
-    class="virtual-scrollbar__main position-relative"
+    class="virtual-scrollbar__main position-relative h-100 w-100"
     (mousedown)="mousedownMain($event)"
     #wrapper
   >
     <div
       class="virtual-scrollbar__track position-absolute"
-      [style.height]="trackHeight + 'px'"
-      [style.top]="trackTop + 'px'"
+      [style.height]="!horizontal ? trackSize + 'px' : 'calc(100% - 2px)'"
+      [style.width]="horizontal ? trackSize + 'px' : 'calc(100% - 2px)'"
+      [style.left]="horizontal ? trackLeft + 'px' : '50%'"
+      [style.top]="!horizontal ? trackTop + 'px' : '50%'"
+      [style.transform]="horizontal ? 'translateY(-50%)' : 'translateX(-50%)'"
       #track
       (mousedown)="$event.stopPropagation(); mousedownTrack($event)"
     ></div>
