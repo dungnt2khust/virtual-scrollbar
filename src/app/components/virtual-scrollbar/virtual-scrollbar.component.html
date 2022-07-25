@@ -1,0 +1,14 @@
+<div class="virtual-scrollbar d-flex flex-column align-items-center">
+  <div class="virtual-scrollbar__control"></div>
+  <div
+    class="virtual-scrollbar__main position-relative"
+    (mousedown)="mousedownMain($event)"
+  >
+    <div
+      class="virtual-scrollbar__track position-absolute"
+      #track
+      (mousedown)="$event.stopPropagation(); mousedownTrack($event)"
+    ></div>
+  </div>
+  <div class="virtual-scrollbar__control"></div>
+</div>
