@@ -26,7 +26,8 @@ export class VirtualScrollbarComponent implements OnInit {
     this.elementScrollable = document.getElementById(this.id);
     this.elementScrollable.addEventListener('scroll', (e) => {
       let scrollTop = this.elementScrollable.scrollTop;
-      this.track.nativeElement.style.
+      console.log(scrollTop);
+      this.trackTop = (scrollTop / this.scrollHeight) * this.thumbHeight;
     });
 
     window.addEventListener('mousemove', (e) => {
@@ -39,8 +40,7 @@ export class VirtualScrollbarComponent implements OnInit {
           if (e.clientY < this.thumbHeight - this.trackHeight) {
             this.trackTop = 0;
           } else {
-            this.trackTop =
-              this.thumbHeight - this.trackHeight;
+            this.trackTop = this.thumbHeight - this.trackHeight;
           }
         }
       }
