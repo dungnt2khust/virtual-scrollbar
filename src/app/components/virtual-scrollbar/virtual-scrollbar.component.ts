@@ -23,9 +23,11 @@ export class VirtualScrollbarComponent implements OnInit {
   thumbSize = 0;
   trackSize = 0;
   elementScrollable: any;
+  haveScroll = false;
 
   ngAfterViewInit() {
     this.setSizeScrollbar();
+    this.haveScroll = this.checkHaveScroll();
     this.elementScrollable = document.getElementById(this.id);
     this.elementScrollable.addEventListener('scroll', (e) => {
       if (!this.horizontal) {
@@ -78,10 +80,23 @@ export class VirtualScrollbarComponent implements OnInit {
     });
     window.addEventListener('resize', () => {
       this.setSizeScrollbar();
+      this.haveScroll = this.checkHaveScroll();
     });
   }
 
   ngOnInit() {}
+  /**
+   * Kiểm tra xem có scroll không
+   * createdby ntdung5 25.07.2022
+   */
+  checkHaveScroll() {
+    if (this.elementScrollable) {
+      let scrollWidth = this.elementScrollable.scrollWidth;
+      let width = this.elementScrollable.getBoundingClientRect().width;
+      console.log(scrollWidth, width);
+      return scrollWidth > width;
+    } else return false;
+  }
 
   /**
    * Đặt kicks thước cho scrollbar

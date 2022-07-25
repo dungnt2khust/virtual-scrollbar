@@ -1,6 +1,7 @@
 <div
   [style]="styleScrollbar"
   class="virtual-scrollbar d-flex flex-column align-items-center"
+  *ngIf="haveScroll"
 >
   <div
     class="virtual-scrollbar__main position-relative h-100 w-100"
