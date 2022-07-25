@@ -14,11 +14,11 @@ export class VirtualScrollbarComponent implements OnInit {
   movingTrack = false;
   startY = 0;
   trackTop = 0;
-  clientHeight = 0;
-  scrollHeight = 0;
+  clientSize = 0;
+  scrollSize = 0;
 
-  thumbHeight = 0;
-  trackHeight = 0;
+  thumbSize = 0;
+  trackSize = 0;
   elementScrollable: any;
 
   ngAfterViewInit() {
@@ -27,7 +27,7 @@ export class VirtualScrollbarComponent implements OnInit {
     this.elementScrollable.addEventListener('scroll', (e) => {
       let scrollTop = this.elementScrollable.scrollTop;
       console.log(scrollTop);
-      this.trackTop = (scrollTop / this.scrollHeight) * this.thumbHeight;
+      this.trackTop = (scrollTop / this.scrollSize) * this.thumbSize;
     });
 
     window.addEventListener('mousemove', (e) => {
@@ -37,12 +37,14 @@ export class VirtualScrollbarComponent implements OnInit {
         if (!outWrapper.out) {
           this.trackTop = e.clientY - this.startY;
         } else {
-          if (e.clientY < this.thumbHeight - this.trackHeight) {
+          if (e.clientY < this.thumbSize - this.trackSize) {
             this.trackTop = 0;
           } else {
-            this.trackTop = this.thumbHeight - this.trackHeight;
+            this.trackTop = this.thumbSize - this.trackSize;
           }
         }
+        this.elementScrollable.scrollTop =
+          (this.trackTop / this.thumbSize) * this.scrollSize;
       }
     });
     window.addEventListener('mouseup', (e) => {
@@ -60,12 +62,10 @@ export class VirtualScrollbarComponent implements OnInit {
    */
   setSizeScrollbar() {
     var scrollable = document.getElementById(this.id);
-    this.clientHeight = scrollable.clientHeight;
-    this.scrollHeight = scrollable.scrollHeight;
-    this.thumbHeight =
-      this.wrapper.nativeElement.getBoundingClientRect().height;
-    this.trackHeight =
-      (this.clientHeight / this.scrollHeight) * this.thumbHeight;
+    this.clientSize = scrollable.clientHeight;
+    this.scrollSize = scrollable.scrollHeight;
+    this.thumbSize = this.wrapper.nativeElement.getBoundingClientRect().height;
+    this.trackSize = (this.clientSize / this.scrollSize) * this.thumbSize;
   }
 
   mousedownMain(e) {
@@ -97,7 +97,7 @@ export class VirtualScrollbarComponent implements OnInit {
   outWrapper(e) {
     if (
       e.clientY - this.startY >= 0 &&
-      e.clientY - this.startY <= this.thumbHeight - this.trackHeight
+      e.clientY - this.startY <= this.thumbSize - this.trackSize
     ) {
       return {
         out: false,
