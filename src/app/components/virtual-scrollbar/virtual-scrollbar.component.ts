@@ -27,7 +27,7 @@ export class VirtualScrollbarComponent implements OnInit {
 
   ngAfterViewInit() {
     this.setSizeScrollbar();
-    this.haveScroll = this.checkHaveScroll();
+    this.checkHaveScroll();
     this.elementScrollable = document.getElementById(this.id);
     this.elementScrollable.addEventListener('scroll', (e) => {
       if (!this.horizontal) {
@@ -80,7 +80,7 @@ export class VirtualScrollbarComponent implements OnInit {
     });
     window.addEventListener('resize', () => {
       this.setSizeScrollbar();
-      this.haveScroll = this.checkHaveScroll();
+      this.checkHaveScroll();
     });
   }
 
@@ -93,9 +93,14 @@ export class VirtualScrollbarComponent implements OnInit {
     if (this.elementScrollable) {
       let scrollWidth = this.elementScrollable.scrollWidth;
       let width = this.elementScrollable.getBoundingClientRect().width;
-      console.log(scrollWidth, width);
-      return scrollWidth > width;
-    } else return false;
+      if (scrollWidth > width) {
+        this.haveScroll = true;
+      } else {
+        this.haveScroll = false;
+      }
+    } else {
+      this.haveScroll = false;
+    }
   }
 
   /**
@@ -107,12 +112,13 @@ export class VirtualScrollbarComponent implements OnInit {
     if (this.horizontal) {
       this.clientSize = scrollable.clientWidth;
       this.scrollSize = scrollable.scrollWidth;
-      this.thumbSize = this.wrapper.nativeElement.getBoundingClientRect().width;
+      this.thumbSize =
+        this.wrapper?.nativeElement.getBoundingClientRect().width;
     } else {
       this.clientSize = scrollable.clientHeight;
       this.scrollSize = scrollable.scrollHeight;
       this.thumbSize =
-        this.wrapper.nativeElement.getBoundingClientRect().height;
+        this.wrapper?.nativeElement.getBoundingClientRect().height;
     }
     this.trackSize = (this.clientSize / this.scrollSize) * this.thumbSize;
   }
