@@ -134,7 +134,36 @@ export class VirtualScrollbarComponent implements OnInit {
   }
 
   mousedownMain(e) {
-    console.log(e);
+    let size = this.track.nativeElement.getBoundingClientRect();
+    if (this.horizontal) {
+      if (e.clientX < size.left) {
+        var newLeft = this.trackLeft - this.trackSize;
+        this.trackLeft = newLeft ? newLeft : 0;
+      }
+      if (e.clientX > size.right) {
+        var newLeft = this.trackLeft + this.trackSize;
+        this.trackLeft =
+          newLeft <= this.thumbSize - this.trackSize
+            ? newLeft
+            : this.thumbSize - this.trackSize;
+      }
+      this.elementScrollable.scrollLeft =
+        (this.trackLeft / this.thumbSize) * this.scrollSize;
+    } else {
+      if (e.clientY < size.top) {
+        var newTop = this.trackTop - this.trackSize;
+        this.trackTop = newTop ? newTop : 0;
+      }
+      if (e.clientY > size.top) {
+        var newTop = this.trackTop + this.trackSize;
+        this.trackTop =
+          newTop <= this.thumbSize - this.trackSize
+            ? newTop
+            : this.thumbSize - this.trackSize;
+      }
+      this.elementScrollable.scrollTop =
+        (this.trackTop / this.thumbSize) * this.scrollSize;
+    }
   }
 
   mousedownTrack(e) {
